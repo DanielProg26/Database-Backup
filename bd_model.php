@@ -6,13 +6,12 @@ use mysqli;
 
 class BDModel {
     
-    private $db;
-    private $path = "ruta donde guardaras tus respaldos";
-    private $aplication = 'Nombre de tu aplicacion';
-    private $description = 'Descripcion de tu base de datos';
+    private $path = ""; // Example: app/lib/backups/
+    private $aplication = ''; // Name of your aplication
+    private $description = ''; // Description of your database
 
-    // Conexion
-    private $database = 'nombre de tu base de datos';
+    // Conection
+    private $database = '';
     private $user = 'user';
     private $host = 'localhost';
     private $pass = '';
@@ -27,11 +26,11 @@ class BDModel {
         } 
     }
 
-    public function backup($tables){ // Ejemplo 'tabla1, tabla2'
+    public function backup($tables){ // Example 'tabla1, tabla2'
 
         $date = date("d-m-Y H-i-s");
         $tables= '*';
-        $return = "-- MySQL Script generado por $this->aplication \n-- $date \n-- Version: 1.0 \n-- MySQL Admin \n\n";
+        $return = "-- MySQL Script generate by $this->aplication \n-- $date \n-- Version: 1.0 \n-- MySQL Admin \n\n";
         $return .= "SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;\nSET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\nSET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES'; \n\n\n -- ----------------------------------------------------- \n -- Schema $this->database \n -- \n -- $this->description \n -- \n\n CREATE SCHEMA IF NOT EXISTS `$this->database`;\n USE `$this->database`; \n\n ";
 
         if($tables == '*'):
@@ -86,10 +85,10 @@ class BDModel {
         fwrite($handle,$return);
         fclose($handle);
 
-        return array('Ruta'=>$filename);
+        return array('Route'=>$filename);
     }
 
-    // Restaurar la base de datos
+    // Restore
     public function restore($filename){ // example.sql
 
         $texto = file_get_contents($this->path.$filename);
@@ -111,17 +110,17 @@ class BDModel {
             endforeach;
         endif;
 
-        return array('msg'=> 'Restauracion Exitosa!');
+        return array('msg'=> 'ok!');
 
     }
 
-    // Borramos un respaldo
+    // Delete the file
     public function delete($filename){ // example.sql
 
         if(unlink($this->path.$filename)):
-            return array('archivo' => $this->path.$filename, 'Consulta' => $result);
+            return array('file' => $this->path.$filename);
         else:
-            return array('msg'=>'No existe el archivo');
+            return array('msg'=>'The file don´t exists');
         endif;
 
     }
