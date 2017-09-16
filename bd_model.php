@@ -49,7 +49,7 @@ class BDModel {
         foreach($tables as $table):
             $result = $this->db->query("SELECT * FROM $table");
             $num_fields = mysqli_num_fields($result);
-            $return .= "-- ----------------------------------------------------- \n -- Table `Iuteb_asignaturas`.`$table` \n -- ----------------------------------------------------- \n\n";
+            $return .= "-- ----------------------------------------------------- \n -- Table `$database`.`$table` \n -- ----------------------------------------------------- \n\n";
             
             $return.="DROP TABLE IF EXISTS $table;";
 
